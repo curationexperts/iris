@@ -17,7 +17,7 @@ before_install:
  - ./configure && make
  - sudo make install
  - cd ..
- - gem install bundler -v 1.13.1 # hopefully temporary
+ - gem install bundler # -v 1.13.1 # hopefully temporary
 install: bundle install --jobs=3 --retry=3
 before_script:
   - gdalinfo --version
