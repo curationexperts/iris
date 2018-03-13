@@ -1,0 +1,36 @@
+language: ruby
+cache: bundler
+sudo: true
+rvm:
+  - 2.3.4 # latest release
+jdk:
+  - oraclejdk8
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  matrix:
+    - RAILS_VERSION=5.0.0.1
+      RDF_VERSION=2.1.0
+before_install:
+ - git clone https://github.com/propublica/simple-tiles.git
+ - cd simple-tiles
+ - ./configure && make
+ - sudo make install
+ - cd ..
+ - gem install bundler -v 1.13.1 # hopefully temporary
+install: bundle install --jobs=3 --retry=3
+before_script:
+  - gdalinfo --version
+  - bundle exec rake db:create
+script:
+  - bundle exec rake ci
+services:
+  - redis-server
+addons:
+  apt:
+    packages:
+    - libgdal1h
+    - libgdal-dev
+    - gdal-bin
+    - libcairo2-dev
+    - libpango1.0-dev
