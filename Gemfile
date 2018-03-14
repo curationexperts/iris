@@ -65,3 +65,7 @@ group :development, :test do
   gem 'fcrepo_wrapper'
   gem 'rspec-rails'
 end
+
+group :test do
+  gem 'coveralls', require: false
+end
