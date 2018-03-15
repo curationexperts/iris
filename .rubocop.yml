@@ -10,7 +10,7 @@ AllCops:
     - '**/*.gemspec' # these would normally be inherited from bixby
     - 'config/**/*'
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - "**/Capfile"
     - "**/Gemfile"
