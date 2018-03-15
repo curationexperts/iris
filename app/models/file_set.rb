@@ -3,5 +3,4 @@ class FileSet < ActiveFedora::Base
   include ::Hyrax::FileSetBehavior
   # GeoWorks behavior to FileSet.
   include ::GeoWorks::GeoFileSetBehavior
-
 end

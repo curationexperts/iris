@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-
-
-
   concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
@@ -17,10 +14,9 @@ Rails.application.routes.draw do
   end
 
   mount Blacklight::Engine => '/'
-
-    concern :searchable, Blacklight::Routes::Searchable.new
-
-  resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+  concern :searchable, Blacklight::Routes::Searchable.new
+  resource :catalog, only: [:index], as: 'catalog', path:
+    '/catalog', controller: 'catalog' do
     concerns :searchable
   end
 
