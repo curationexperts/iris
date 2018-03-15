@@ -40,6 +40,7 @@ gem 'geo_works', github: 'samvera-labs/geo_works'
 gem 'hyrax', '1.0.5'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'rsolr', '>= 1.0'
+gem 'sidekiq'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :development do
