@@ -21,6 +21,14 @@ This project is a Hyrax 1.0.5 application that uses the Samvera Labs geo_works g
    *note:* use ` &` to start in the background, or run redis in a new terminal
    session
 
+## Integration with a geoblacklight-based app
+
+If you want your fedora objects to be indexed in another solr instance that is used by a geoblacklight app, set the environment variable to point to that solr instance:
+
+`export GEOBLACKLIGHT_SOLR_URL="http://127.0.0.1:8987/solr/development"`
+
+Indexing into the geoblacklight solr happens in a background job, so make sure your environment is configured to run background jobs.
+
 ## Install Geo_works dependencies
 
 1. GDAL
