@@ -1,4 +1,4 @@
-# UCSB GeoWorks
+# Iris
 
 This project is a Hyrax 1.0.5 application that uses the Samvera Labs geo_works gem to ingest works with spatial geographical data.
 
@@ -12,9 +12,9 @@ This project is a Hyrax 1.0.5 application that uses the Samvera Labs geo_works g
 1. Change to your working directory for new development projects
    `cd .`
 1. Clone this repo
-   `git clone https://github.com/curationexperts/ucsb-geo_works.git`
+   `git clone git@github.com:curationexperts/iris.git`
 1. Change to the application directory
-   `cd ucsb-geo_works`
+   `cd iris`
 1. `bundle install` under project's current ruby (2.3.4)
 1. Start redis
    `redis-server &`
