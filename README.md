@@ -2,8 +2,9 @@
 
 This project is a Hyrax 1.0.5 application that uses the Samvera Labs geo_works gem to ingest works with spatial geographical data.
 
-<p><a href="https://travis-ci.org/curationexperts/ucsb-geo_works"><img src="https://travis-ci.org/curationexperts/ucsb-geo_works.svg?branch=master" alt="Build Status"></a>
-<a href='https://coveralls.io/github/curationexperts/ucsb-geo_works'><img src='https://coveralls.io/repos/github/curationexperts/ucsb-geo_works/badge.svg' alt='Coverage Status' /></a>
+<p><a href="https://travis-ci.org/curationexperts/iris"><img src="https://travis-ci.org/curationexperts/iris.svg?branch=master" alt="Build Status"></a>
+<a href='https://coveralls.io/github/curationexperts/iris?branch=master'><img src='https://coveralls.io/repos/github/curationexperts/iris/badge.svg?branch=master' alt='Coverage Status' /></a>
+</a>
 
 </p>
 
