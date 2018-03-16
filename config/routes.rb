@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  mount Blacklight::Engine => '/'
+
+  concern :searchable, Blacklight::Routes::Searchable.new
+
+  resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+    concerns :searchable
+  end
+
   concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
@@ -11,13 +19,6 @@ Rails.application.routes.draw do
     collection do
       delete 'clear'
     end
-  end
-
-  mount Blacklight::Engine => '/'
-  concern :searchable, Blacklight::Routes::Searchable.new
-  resource :catalog, only: [:index], as: 'catalog', path:
-    '/catalog', controller: 'catalog' do
-    concerns :searchable
   end
 
   devise_for :users
@@ -28,19 +29,7 @@ Rails.application.routes.draw do
   curation_concerns_basic_routes
   curation_concerns_embargo_management
   mount GeoWorks::Engine => '/'
-  concern :exportable, Blacklight::Routes::Exportable.new
 
-  resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
-    concerns :exportable
-  end
-
-  resources :bookmarks do
-    concerns :exportable
-
-    collection do
-      delete 'clear'
-    end
-  end
 
   # Web console for background jobs
   require 'sidekiq/web'
