@@ -33,7 +33,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
+gem 'darlingtonia'
 gem 'devise'
 gem 'devise-guests', '~> 0.6'
 gem 'geo_works', github: 'samvera-labs/geo_works'
