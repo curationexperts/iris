@@ -15,7 +15,7 @@ class Importer < Darlingtonia::Importer
   private
 
     def default_creator
-      User.find_or_create_system_user(config['user_key'])
+      User.batch_user
     end
 
     def default_record_importer

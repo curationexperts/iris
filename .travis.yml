@@ -23,6 +23,8 @@ before_script:
   - gdalinfo --version
   - bundle exec rake db:create
   - bundle exec rake db:migrate
+env:
+  - IMPORTER_FILE_PATH='spec/fixtures'
 script:
   - bundle exec rake ci
 services:
