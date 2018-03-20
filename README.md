@@ -75,3 +75,12 @@ Indexing into the geoblacklight solr happens in a background job, so make sure y
 2. Ensure AdminSet dependencies are in place: `bundle exec rake hyrax:workflow:load` and  `bundle exec rake hyrax:default_admin_set:create`
 
 3. Start server `bundle exec rails s`
+
+## Run the app in development mode
+
+* Start redis server
+* Run fcrepo_wrapper from my alexandria workspace
+* Run solr_wrapper from my iris workspace
+* Run solr_wrapper from my ucsb-geoblacklight workspace (if you want to ingegrate with ucsb-geoblacklight)
+* Start sidekiq (if you want to run background jobs)
+* Start `rails s`
