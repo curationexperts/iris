@@ -15,3 +15,7 @@ Naming/FileName:
     - "**/Capfile"
     - "**/Gemfile"
     - "**/*.rake"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/importers/iris_mapper_spec.rb"

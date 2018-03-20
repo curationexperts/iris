@@ -1,0 +1,12 @@
+---
+development:
+  user_key:  <%= ENV['IMPORTER_USER_KEY'] %>
+  file_path: <%= ENV['IMPORTER_FILE_PATH'] %>
+
+test:
+  user_key:  <%= ENV['IMPORTER_USER_KEY'] %>
+  file_path: <%= ENV['IMPORTER_FILE_PATH'] %>
+
+production:
+  user_key:  <%= ENV['IMPORTER_USER_KEY'] %>
+  file_path: <%= ENV['IMPORTER_FILE_PATH'] %>
