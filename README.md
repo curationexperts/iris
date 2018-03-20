@@ -81,6 +81,6 @@ Indexing into the geoblacklight solr happens in a background job, so make sure y
 * Start redis server
 * Run fcrepo_wrapper from my alexandria workspace
 * Run solr_wrapper from my iris workspace
-* Run solr_wrapper from my ucsb-geoblacklight workspace (if you want to ingegrate with ucsb-geoblacklight)
+* Run solr_wrapper from my ucsb-geoblacklight workspace (if you want to integrate with ucsb-geoblacklight)
 * Start sidekiq (if you want to run background jobs)
 * Start `rails s`
