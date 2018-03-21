@@ -20,5 +20,21 @@ RSpec.describe Importer do
 
   it "creates an ImageWork from a one-row csv", :clean do
     expect { importer.import }.to change { ImageWork.count }.by 1
+    expect(ImageWork.count).to eq 1
+    image = ImageWork.first
+
+    expect(image.visibility).to eq "open"
+  end
+
+  context "a CSV without 'visibility' field", :clean do
+    let(:file) { File.open(File.join(fixture_path, "example_with_no_visibility.csv")) }
+
+    it "creates a work with 'restricted' visibility" do
+      expect { importer.import }.to change { ImageWork.count }.by 1
+      expect(ImageWork.count).to eq 1
+      image = ImageWork.first
+
+      expect(image.visibility).to eq "restricted"
+    end
   end
 end

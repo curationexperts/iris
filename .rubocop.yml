@@ -19,3 +19,5 @@ Naming/FileName:
 Metrics/BlockLength:
   Exclude:
     - "spec/importers/iris_mapper_spec.rb"
+    - "spec/importers/importer_spec.rb"
+    - "app/controllers/catalog_controller.rb"
