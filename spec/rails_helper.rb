@@ -13,6 +13,9 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
+require 'active_fedora/cleaner'
+require 'database_cleaner'
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -60,4 +63,30 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:suite) do
+    ActiveFedora::Cleaner.clean!
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before do |example|
+    ActiveFedora::Cleaner.clean! if ActiveFedora::Base.count > 0
+
+    if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
+      DatabaseCleaner.strategy = :truncation
+    else
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+    end
+
+    Hyrax::Workflow::WorkflowImporter.load_workflows
+  end
+
+  # Pass ':admin_set' to your specs if you need the default AdminSet to exist.
+  config.before(:each, :admin_set) do
+    # Create Hyrax's expected magic roles
+    Sipity::Role.find_or_create_by(name: 'depositing')
+    Sipity::Role.find_or_create_by(name: 'managing')
+    AdminSet.find_or_create_default_admin_set_id
+  end
 end

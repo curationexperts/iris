@@ -63,6 +63,7 @@ group :development, :test do
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
   gem 'capistrano-sidekiq', '~> 0.20.0'
+  gem 'database_cleaner'
   gem 'fcrepo_wrapper'
   gem 'rspec-rails'
   gem 'solr_wrapper', '>= 0.3'

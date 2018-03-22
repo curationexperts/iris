@@ -12,23 +12,11 @@
 # the additional setup, and require it from the spec files that actually need
 # it.
 
-require 'active_fedora/cleaner'
-
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
-
-  config.before(:suite) do
-    ActiveFedora::Cleaner.clean!
-  end
-
-  config.before do |example|
-    # Pass `:clean' to destroy objects in fedora/solr
-    ActiveFedora::Cleaner.clean! if example.metadata[:clean]
-  end
-
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
