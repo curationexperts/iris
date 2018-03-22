@@ -16,8 +16,10 @@ RSpec.describe IrisMapper do
       creator: ["Stephen Hawking"],
       keyword: ["physics"],
       rights: ["Yes"],
-      resource_type: ["ImageWork"] }
+      resource_type: ["ImageWork"],
+      visibility: nil }
   end
+
   it "maps the required title field" do
     mapper.metadata = { "title" => "Research" }
     expect(mapper.map_field(:title)).to eq(["Research"])
@@ -43,9 +45,14 @@ RSpec.describe IrisMapper do
     expect(mapper.map_field(:resource_type)).to eq(["ImageWork"])
   end
 
+  it "maps the visibility field" do
+    mapper.metadata = { "visibility" => "open" }
+    expect(mapper.visibility).to eq("open")
+  end
+
   it "provides all the necessary fields" do
     mapper.metadata = image_work_metadata
 
-    expect(input_record.attributes.eql?(hyrax_metadata)).to be_truthy
+    expect(input_record.attributes).to eql hyrax_metadata
   end
 end
