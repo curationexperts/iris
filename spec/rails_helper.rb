@@ -65,6 +65,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.before(:suite) do
+    ActiveJob::Base.queue_adapter = :test
     ActiveFedora::Cleaner.clean!
     DatabaseCleaner.clean_with(:truncation)
   end

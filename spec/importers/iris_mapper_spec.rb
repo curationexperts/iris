@@ -17,7 +17,8 @@ RSpec.describe IrisMapper do
       keyword: ["physics"],
       rights: ["Yes"],
       resource_type: ["ImageWork"],
-      visibility: nil }
+      visibility: nil,
+      representative_file: nil }
   end
 
   it "maps the required title field" do
@@ -54,5 +55,17 @@ RSpec.describe IrisMapper do
     mapper.metadata = image_work_metadata
 
     expect(input_record.attributes).to eql hyrax_metadata
+  end
+
+  context "with an attached file" do
+    let(:image_work_metadata) do
+      { "title" => "Great",
+        "file_name" => "geo_tif.tif" }
+    end
+
+    it "maps the file_name field" do
+      mapper.metadata = { "file_name" => "geo_tif.tif" }
+      expect(mapper.representative_file).to eq("geo_tif.tif")
+    end
   end
 end
