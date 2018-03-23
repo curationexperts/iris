@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'rails_helper'
+require 'csv'
 
 RSpec.describe Importer do
   subject(:importer) { described_class.new(parser: parser) }
@@ -35,6 +36,41 @@ RSpec.describe Importer do
       image = ImageWork.first
 
       expect(image.visibility).to eq "restricted"
+    end
+  end
+  # TODO: test shapefiles
+  context 'creates a RasterWork and then attaches a geo tif file' do
+    let(:file) { File.open(File.join(fixture_path, "raster_example.csv")) }
+    let(:binary_title) do
+      data = CSV.read(File.join(fixture_path, "raster_example.csv"), headers: true)
+      data['file_name'].first
+    end
+
+    it 'attaches file as a FileSet and sets its representative title to file_name', :perform_enqueued do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+
+      importer.import
+      raster_work = RasterWork.where(title: 'Great Rasters')
+
+      expect(FileSet.find(raster_work.first.representative_id).title.first).to eql(binary_title)
+    end
+
+    it "creates a thumbnail", :perform_enqueued do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+
+      importer.import
+      raster_work = RasterWork.where(title: 'Great Rasters')
+
+      expect(FileSet.find(raster_work.first.representative_id).thumbnail_id).not_to be_empty
+    end
+
+    it "adds file_set information to the work's index", :perform_enqueued do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+
+      importer.import
+      raster_work = RasterWork.where(title: 'Great Rasters')
+
+      expect(raster_work.first.to_solr["file_set_ids_ssim"]).not_to be_empty
     end
   end
 end
