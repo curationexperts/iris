@@ -8,14 +8,14 @@ RSpec.describe IrisMapper do
     { "title" => "Great",
       "creator" => "Stephen Hawking",
       "keyword" => "physics",
-      "rights" => "Yes",
+      "rights" => "http://creativecommons.org/publicdomain/zero/1.0/",
       "resource_type" => "ImageWork" }
   end
   let(:hyrax_metadata) do
     { title: ["Great"],
       creator: ["Stephen Hawking"],
       keyword: ["physics"],
-      rights: ["Yes"],
+      rights: ["http://creativecommons.org/publicdomain/zero/1.0/"],
       resource_type: ["ImageWork"],
       visibility: nil,
       representative_file: nil }
@@ -37,8 +37,8 @@ RSpec.describe IrisMapper do
   end
 
   it "maps the required rights field" do
-    mapper.metadata = { "rights" => "Yes" }
-    expect(mapper.map_field(:rights)).to eq(["Yes"])
+    mapper.metadata = { "rights" => "http://creativecommons.org/publicdomain/zero/1.0/" }
+    expect(mapper.map_field(:rights)).to eq(["http://creativecommons.org/publicdomain/zero/1.0/"])
   end
 
   it "maps the required resource_type field" do
