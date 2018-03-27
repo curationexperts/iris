@@ -39,7 +39,7 @@ gem 'devise-guests', '~> 0.6'
 gem 'geo_works', github: 'samvera-labs/geo_works'
 gem 'hyrax', '1.0.5'
 gem 'loofah', '~> 2.2', '>= 2.2.1'
-gem 'pg'
+gem 'pg', '~> 0.18'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'rsolr', '>= 1.0'
 gem 'sidekiq'
