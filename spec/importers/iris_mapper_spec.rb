@@ -18,7 +18,9 @@ RSpec.describe IrisMapper do
       rights: ["http://creativecommons.org/publicdomain/zero/1.0/"],
       resource_type: ["ImageWork"],
       visibility: nil,
-      representative_file: nil }
+      representative_file: nil,
+      shapefiles: nil,
+      geo_mime_type: nil }
   end
 
   it "maps the required title field" do
@@ -60,12 +62,26 @@ RSpec.describe IrisMapper do
   context "with an attached file" do
     let(:image_work_metadata) do
       { "title" => "Great",
-        "file_name" => "geo_tif.tif" }
+        "file_name" => "geo_tif.tif",
+        "geo_mime_type" => "image/tiff; gdal-format=GTiff" }
+    end
+
+    it "maps the geo_mime_type" do
+      mapper.metadata = { "geo_mime_type" => "image/tiff; gdal-format=GTiff" }
+      expect(mapper.geo_mime_type).to eq("image/tiff; gdal-format=GTiff")
     end
 
     it "maps the file_name field" do
       mapper.metadata = { "file_name" => "geo_tif.tif" }
       expect(mapper.representative_file).to eq("geo_tif.tif")
+    end
+  end
+
+  context "with an attached shapefile zip" do
+    # we replace single-quotes, required for oob csv parsing, with double-quotes, required by geo_works. See iris_mapper.rb for more detail.
+    it "maps the geo_mime_type" do
+      mapper.metadata = { "geo_mime_type" => "application/zip; ogr-format='ESRI Shapefile'" }
+      expect(mapper.geo_mime_type).to eq('application/zip; ogr-format="ESRI Shapefile"')
     end
   end
 end
