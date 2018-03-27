@@ -2,7 +2,7 @@
 lock "~> 3.10.1"
 
 set :application, "iris"
-set :repo_url, "git@github.com:curationexperts/iris.git"
+set :repo_url, "https://github.com/curationexperts/iris.git"
 
 set :deploy_to, '/opt/iris'
 
