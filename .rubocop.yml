@@ -21,3 +21,7 @@ Metrics/BlockLength:
     - "spec/importers/iris_mapper_spec.rb"
     - "spec/importers/importer_spec.rb"
     - "app/controllers/catalog_controller.rb"
+    
+Style/IfUnlessModifier:
+  Exclude:
+    - "app/models/ability.rb"

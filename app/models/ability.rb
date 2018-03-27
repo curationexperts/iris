@@ -5,6 +5,10 @@ class Ability
   include GeoWorks::Ability
   self.ability_logic += [:everyone_can_create_curation_concerns]
 
+  if current_user.admin?
+    can [:create, :show, :add_user, :remove_user, :index, :edit, :update, :destroy], Role
+  end
+
   # Define any customized permissions here.
   def custom_permissions
     # Limits deleting objects to a the admin user
