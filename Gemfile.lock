@@ -214,6 +214,10 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.2.1)
+    dotenv-rails (2.2.1)
+      dotenv (= 2.2.1)
+      railties (>= 3.2, < 5.2)
     dropbox_api (0.1.10)
       faraday (~> 0.9, ~> 0.8)
       oauth2 (~> 1.1)
@@ -846,6 +850,7 @@ DEPENDENCIES
   database_cleaner
   devise
   devise-guests (~> 0.6)
+  dotenv-rails
   fcrepo_wrapper
   geo_works!
   hyrax (= 1.0.5)
