@@ -9,6 +9,9 @@ RSpec.describe IrisMapper do
       "creator" => "Stephen Hawking",
       "keyword" => "physics",
       "rights" => "http://creativecommons.org/publicdomain/zero/1.0/",
+      "spatial" => "Alaska",
+      "temporal" => "2018",
+      "provenance" => "UCSB",
       "resource_type" => "ImageWork" }
   end
   let(:hyrax_metadata) do
@@ -17,6 +20,9 @@ RSpec.describe IrisMapper do
       keyword: ["physics"],
       rights: ["http://creativecommons.org/publicdomain/zero/1.0/"],
       resource_type: ["ImageWork"],
+      spatial: ["Alaska"],
+      temporal: ["2018"],
+      provenance: "UCSB",
       visibility: nil,
       representative_file: nil,
       shapefiles: nil,
@@ -51,6 +57,21 @@ RSpec.describe IrisMapper do
   it "maps the visibility field" do
     mapper.metadata = { "visibility" => "open" }
     expect(mapper.visibility).to eq("open")
+  end
+
+  it "maps the provenance field" do
+    mapper.metadata = { "provenance" => "UCSB" }
+    expect(mapper.provenance).to eq("UCSB")
+  end
+
+  it "maps the spatial field" do
+    mapper.metadata = { "spatial" => "Alaska" }
+    expect(mapper.spatial).to eq(["Alaska"])
+  end
+
+  it "maps the temporal field" do
+    mapper.metadata = { "temporal" => "2018" }
+    expect(mapper.temporal).to eq(["2018"])
   end
 
   it "provides all the necessary fields" do
