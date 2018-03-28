@@ -38,10 +38,10 @@ RSpec.describe Importer do
       expect(image.visibility).to eq "restricted"
     end
   end
-  # TODO: test shapefiles
+
   context 'creates a RasterWork and then attaches a geo tif file' do
     let(:file) { File.open(File.join(fixture_path, "raster_example.csv")) }
-    let(:binary_title) do
+    let(:raster_title) do
       data = CSV.read(File.join(fixture_path, "raster_example.csv"), headers: true)
       data['file_name'].first
     end
@@ -52,7 +52,7 @@ RSpec.describe Importer do
       importer.import
       raster_work = RasterWork.where(title: 'Great Rasters')
 
-      expect(FileSet.find(raster_work.first.representative_id).title.first).to eql(binary_title)
+      expect(FileSet.find(raster_work.first.representative_id).title.first).to eql(raster_title)
     end
 
     it "creates a thumbnail", :perform_enqueued do
@@ -71,6 +71,42 @@ RSpec.describe Importer do
       raster_work = RasterWork.where(title: 'Great Rasters')
 
       expect(raster_work.first.to_solr["file_set_ids_ssim"]).not_to be_empty
+    end
+  end
+
+  # TODO: test for specific properties of geo files: spatial, temporal, coverage, etc.
+  # See https://github.com/samvera-labs/geo_works/blob/master/spec/services/geo_works/discovery/document_builder_spec.rb for reference.
+  context "creates a VectorWork and attaches shape files" do
+    let(:file) { File.open(File.join(fixture_path, "vector_example.csv")) }
+    let(:vector_title) do
+      data = CSV.read(File.join(fixture_path, "vector_example.csv"), headers: true)
+      data['shape_file'].first
+    end
+
+    it "attaches and indexes the shape file set as a FileSet", :perform_enqueued do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+      importer.import
+      vector_work = VectorWork.where(title: 'Victor Vector')
+
+      expect(vector_work.first.to_solr["file_set_ids_ssim"].size).to eq(1)
+    end
+
+    it 'creates and indexes a .png thumbnail', :perform_enqueued do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+
+      importer.import
+      vector_work = VectorWork.where(title: 'Victor Vector')
+
+      expect(FileSet.find(vector_work.first.representative_id).to_solr['thumbnail_path_ss']).to include('.png')
+    end
+
+    it "sets the thumbnail title to the shape_file name", :perform_enqueued do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+
+      importer.import
+      vector_work = VectorWork.where(title: 'Victor Vector')
+
+      expect(FileSet.find(vector_work.first.representative_id).title.first).to eql(vector_title)
     end
   end
 end
