@@ -84,3 +84,12 @@ Indexing into the geoblacklight solr happens in a background job, so make sure y
 * Run solr_wrapper from my ucsb-geoblacklight workspace (if you want to integrate with ucsb-geoblacklight)
 * Start sidekiq (if you want to run background jobs)
 * Start `rails s`
+
+## Import works using the command-line importer
+
+* Make sure you have set an environment variable for the host/port where the rails app runs:  
+`export RAILS_HOST='localhost:3000'`
+
+* To import a sample fixture:  
+`rake iris:import:import_sample_record`
+
