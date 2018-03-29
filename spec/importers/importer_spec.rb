@@ -19,6 +19,54 @@ RSpec.describe Importer do
     expect(importer.parser.class).to eq IrisCsvParser
   end
 
+  it "importing a record queues jobs to update the GeoBlacklight app" do
+    expect { importer.import }.to change { ImageWork.count }.by 1
+    expect(ImageWork.count).to eq 1
+    image = ImageWork.first
+
+    expect(GeoblacklightJob).to have_been_enqueued.with(
+      'id' => image.id,
+      'event' => 'CREATED',
+      'doc' => hash_including(dc_identifier_s: image.id)
+    )
+    # TODO: Jobs should also queue for attached files
+  end
+
+  describe 'Generated URLs' do
+    let(:image) { ImageWork.first }
+
+    let(:expected_reference) { "{\"http://schema.org/url\":\"#{expected_protocol}#{ENV['RAILS_HOST']}/concern/image_works/#{image.id}\"}" }
+
+    before do
+      allow(Rails.application.config).to receive(:force_ssl).and_return(ssl_config)
+      importer.import
+      expect(ImageWork.count).to eq 1
+      image # Find the newly-created ImageWork
+    end
+
+    context 'When SSL is configured' do
+      let(:ssl_config) { true }
+      let(:expected_protocol) { 'https://' }
+
+      it 'configures URL with https' do
+        expect(GeoblacklightJob).to have_been_enqueued.with(
+          hash_including('doc' => hash_including(dct_references_s: expected_reference))
+        )
+      end
+    end
+
+    context 'When SSL is not configured' do
+      let(:ssl_config) { false }
+      let(:expected_protocol) { 'http://' }
+
+      it 'configures URL with http' do
+        expect(GeoblacklightJob).to have_been_enqueued.with(
+          hash_including('doc' => hash_including(dct_references_s: expected_reference))
+        )
+      end
+    end
+  end
+
   it "creates an ImageWork from a one-row csv" do
     expect { importer.import }.to change { ImageWork.count }.by 1
     expect(ImageWork.count).to eq 1
