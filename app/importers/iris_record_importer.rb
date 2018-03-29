@@ -39,9 +39,12 @@ class IrisRecordImporter < Darlingtonia::RecordImporter
       geo_mime_type = attributes.delete(:geo_mime_type)
 
       created = work_type.create(attributes)
+
       # TODO: find out from UCSB if valid record data requires a binary file, if so, these checks for nil will not be necessary
       attach_files(work: created, binary_files: [binary_file], geo_mime_type: geo_mime_type) unless binary_file.nil?
       attach_files(work: created, binary_files: [shape_files], geo_mime_type: geo_mime_type) unless shape_files.nil?
+
+      trigger_create_events(created)
 
       info_stream << "Record created at: #{created.id}"
     end
@@ -65,6 +68,40 @@ class IrisRecordImporter < Darlingtonia::RecordImporter
           actor.create_content(file)
           actor.attach_file_to_work(work, visibility: work.visibility)
         end
+      end
+    end
+
+    # After the new work is created, trigger
+    # 'record_created' events so that the
+    # GeoBlacklight app and the GeoServer instance
+    # will be updated with the new record.
+    #
+    # @param work [RasterWork, VectorWork, ImageWork] The work that was created by this importer.
+    #
+    def trigger_create_events(work)
+      # The geo_works event code is coupled to the
+      # controller/presenter logic, so we need to
+      # create a presenter to pass in.
+      solr_document = SolrDocument.new(work.to_solr)
+      current_ability = ::Ability.new(nil)
+      request = RequestShim.new
+      presenter = presenter_class(work).new(solr_document, current_ability, request)
+
+      GeoWorks::EventsGenerator.new.record_created(presenter)
+      # TODO: For each attached file, generate the events.
+    end
+
+    # @param work [RasterWork, VectorWork, ImageWork] The work record that was created by this importer.
+    def presenter_class(record)
+      case record
+      when ::VectorWork
+        GeoWorks::VectorWorkShowPresenter
+      when ::RasterWork
+        GeoWorks::RasterWorkShowPresenter
+      when ::ImageWork
+        GeoWorks::ImageWorkShowPresenter
+      else
+        GeoWorks::GeoWorksShowPresenter
       end
     end
 end

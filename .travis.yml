@@ -5,12 +5,6 @@ rvm:
   - 2.3.4 # latest release
 jdk:
   - oraclejdk8
-env:
-  global:
-  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-  matrix:
-    - RAILS_VERSION=5.0.0.1
-      RDF_VERSION=2.1.0
 before_install:
  - git clone https://github.com/propublica/simple-tiles.git
  - cd simple-tiles
@@ -24,7 +18,13 @@ before_script:
   - bundle exec rake db:create
   - bundle exec rake db:migrate
 env:
-  - IMPORTER_FILE_PATH='spec/fixtures'
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    - IMPORTER_FILE_PATH='spec/fixtures'
+    - RAILS_HOST='example.com'
+  matrix:
+    - RAILS_VERSION=5.0.0.1
+      RDF_VERSION=2.1.0
 script:
   - bundle exec rake ci
 services:
