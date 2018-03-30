@@ -391,6 +391,8 @@ GEM
       signet
       tinymce-rails (~> 4.1)
       tinymce-rails-imageupload (~> 4.0.17.beta)
+    hyrax-spec (0.3.2)
+      rspec (~> 3.6)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -673,6 +675,10 @@ GEM
     rsolr (2.1.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
+    rspec (3.7.0)
+      rspec-core (~> 3.7.0)
+      rspec-expectations (~> 3.7.0)
+      rspec-mocks (~> 3.7.0)
     rspec-core (3.7.1)
       rspec-support (~> 3.7.0)
     rspec-expectations (3.7.0)
@@ -854,6 +860,7 @@ DEPENDENCIES
   fcrepo_wrapper
   geo_works!
   hyrax (= 1.0.5)
+  hyrax-spec (~> 0.3.2)
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

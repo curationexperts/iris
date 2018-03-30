@@ -67,6 +67,7 @@ group :development, :test do
   gem 'capistrano-sidekiq', '~> 0.20.0'
   gem 'database_cleaner'
   gem 'fcrepo_wrapper'
+  gem 'hyrax-spec', "~> 0.3.2"
   gem 'rspec-rails'
   gem 'solr_wrapper', '>= 0.3'
 end

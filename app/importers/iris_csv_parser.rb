@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class IrisCsvParser < Darlingtonia::CsvParser
   DEFAULT_VALIDATORS = [Darlingtonia::CsvFormatValidator.new,
-                        Darlingtonia::TitleValidator.new].freeze
+                        Darlingtonia::TitleValidator.new, ProvenanceValidator.new].freeze
   def records
     return enum_for(:records) unless block_given?
     file.rewind
