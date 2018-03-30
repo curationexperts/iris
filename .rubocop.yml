@@ -18,14 +18,19 @@ Naming/FileName:
 
 Metrics/BlockLength:
   Exclude:
+    - "spec/importers/coverage_validator_spec.rb"
     - "spec/importers/iris_mapper_spec.rb"
     - "spec/importers/importer_spec.rb"
     - "spec/importers/coverage_validator_spec.rb"
     - "app/controllers/catalog_controller.rb"
+    - "spec/rails_helper.rb"
 
 Metrics/LineLength:
   Exclude:
     - "app/importers/iris_mapper.rb"
 
 RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MessageSpies:
   Enabled: false

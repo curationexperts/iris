@@ -90,4 +90,27 @@ RSpec.configure do |config|
     Sipity::Role.find_or_create_by(name: 'managing')
     AdminSet.find_or_create_default_admin_set_id
   end
+
+  # Use this example group when you want to perform jobs inline during testing.
+  #
+  # Limit to specific job classes with:
+  # ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+  #
+  # Note: If you run CharacterizeJob, you'll want to
+  # stub out the part that calls fits since we don't
+  # have fits on the travis build:
+  # allow(Hydra::Works::CharacterizationService).to receive(:run)
+  #
+  config.before(perform_enqueued: true) do
+    ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+    ActiveJob::Base.queue_adapter.perform_enqueued_at_jobs = true
+  end
+
+  config.after(perform_enqueued: true) do
+    ActiveJob::Base.queue_adapter.enqueued_jobs  = []
+    ActiveJob::Base.queue_adapter.performed_jobs = []
+    ActiveJob::Base.queue_adapter.perform_enqueued_jobs = false
+    ActiveJob::Base.queue_adapter.perform_enqueued_at_jobs = false
+    ActiveJob::Base.queue_adapter = :test
+  end
 end
