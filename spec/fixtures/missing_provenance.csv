@@ -1,2 +1,2 @@
-title,creator,keyword,rights,resource_type,visibility,spatial,temporal
-Great,Stephen Hawking,physics,http://creativecommons.org/publicdomain/zero/1.0/,RasterWork,open,Alaska,2018
+title,creator,keyword,rights,resource_type,visibility,spatial,temporal,northlimit,eastlimit,southlimit,westlimit
+Great,Stephen Hawking,physics,http://creativecommons.org/publicdomain/zero/1.0/,RasterWork,open,Alaska,2018,1,2,-3,-4

@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 class IrisMapper < Darlingtonia::HashMapper
   def fields
-    [:creator, :title, :keyword, :rights, :resource_type, :visibility, :representative_file, :shapefiles, :geo_mime_type, :spatial, :temporal, :provenance, :coverage]
+    [:creator, :title, :keyword, :rights, :resource_type, :visibility, :representative_file, :shapefiles, :geo_mime_type, :spatial, :temporal, :provenance, :coverage, :northlimit, :eastlimit, :southlimit, :westlimit]
+  end
+
+  def input_fields
+    [:northlimit, :eastlimit, :southlimit, :westlimit]
   end
 
   def visibility
@@ -28,13 +32,10 @@ class IrisMapper < Darlingtonia::HashMapper
     [metadata['temporal']]
   end
 
-  # TODO: I temporarily hard-coded these values
-  # because we don't have them in the importer yet.
-  # Fix this method to read coverage field(s) from
-  # CSV file instead.  Note: "coverage" might also be
-  # called "bounding box" or "solr_geom".
+  # :northlimit, :eastlimit, :southlimit, :westlimit are part of the fields array so that the validation can use them,
+  # but we do not need their individual values. The coverage method uses their values to create a Coverage object.
   def coverage
-    GeoWorks::Coverage.new(43.039, -69.856, 42.943, -71.032).to_s
+    GeoWorks::Coverage.new(metadata['northlimit'], metadata['eastlimit'], metadata['southlimit'], metadata['westlimit']).to_s
   end
 
   # we need to send the geo-derivatives class double-quoted strings, but csv input works out of the box with single quotes. this method replaces singles in the csv with doubles.
