@@ -1,2 +1,2 @@
-title,creator,keyword,rights,resource_type,visibility,shape_file,geo_mime_type,spatial,temporal,provenance
-Victor Vector,Stephen Hawking,physics,http://creativecommons.org/publicdomain/zero/1.0/,VectorWork,open,cambridge_grid.zip,application/zip; ogr-format='ESRI Shapefile',Alaska,2018,UCSB
+title,creator,keyword,rights,resource_type,visibility,shape_file,geo_mime_type,spatial,temporal,provenance,northlimit,eastlimit,southlimit,westlimit
+Victor Vector,Stephen Hawking,physics,http://creativecommons.org/publicdomain/zero/1.0/,VectorWork,open,cambridge_grid.zip,application/zip; ogr-format='ESRI Shapefile',Alaska,2018,UCSB,1,2,-3,-4

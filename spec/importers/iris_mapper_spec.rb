@@ -3,7 +3,7 @@ require 'rails_helper'
 
 RSpec.describe IrisMapper do
   subject(:mapper) { described_class.new }
-  let(:input_record) { Darlingtonia::InputRecord.from(metadata: image_work_metadata, mapper: described_class.new) }
+  let(:input_record) { IrisInputRecord.from(metadata: image_work_metadata, mapper: described_class.new) }
   let(:image_work_metadata) do
     { "title" => "Great",
       "creator" => "Stephen Hawking",
@@ -12,7 +12,11 @@ RSpec.describe IrisMapper do
       "spatial" => "Alaska",
       "temporal" => "2018",
       "provenance" => "UCSB",
-      "resource_type" => "ImageWork" }
+      "resource_type" => "ImageWork",
+      "northlimit" => "1",
+      "eastlimit" => "2",
+      "southlimit" => "-3",
+      "westlimit" => "-4" }
   end
   let(:hyrax_metadata) do
     { title: ["Great"],
@@ -26,7 +30,7 @@ RSpec.describe IrisMapper do
       visibility: nil,
       representative_file: nil,
       shapefiles: nil,
-      coverage: "northlimit=43.039; eastlimit=-69.856; southlimit=42.943; westlimit=-71.032; units=degrees; projection=EPSG:4326",
+      coverage: "northlimit=1; eastlimit=2; southlimit=-3; westlimit=-4; units=degrees; projection=EPSG:4326",
       geo_mime_type: nil }
   end
 
@@ -75,9 +79,13 @@ RSpec.describe IrisMapper do
     expect(mapper.temporal).to eq(["2018"])
   end
 
+  it "maps the required coverage fields" do
+    mapper.metadata = { "northlimit" => "43.039", "eastlimit" => "-69.856", "southlimit" => "42.943", "westlimit" => "-71.032" }
+    expect(mapper.coverage).to eq("northlimit=43.039; eastlimit=-69.856; southlimit=42.943; westlimit=-71.032; units=degrees; projection=EPSG:4326")
+  end
+
   it "provides all the necessary fields" do
     mapper.metadata = image_work_metadata
-
     expect(input_record.attributes).to eql hyrax_metadata
   end
 
