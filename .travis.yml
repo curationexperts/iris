@@ -2,7 +2,7 @@ language: ruby
 cache: bundler
 sudo: true
 rvm:
-  - 2.3.4 # latest release
+  - 2.4.4
 jdk:
   - oraclejdk8
 before_install:
