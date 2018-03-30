@@ -19,17 +19,22 @@ RSpec.describe Importer do
     expect(importer.parser.class).to eq IrisCsvParser
   end
 
-  it "importing a record queues jobs to update the GeoBlacklight app" do
-    expect { importer.import }.to change { ImageWork.count }.by 1
-    expect(ImageWork.count).to eq 1
-    image = ImageWork.first
+  # We use 'perform_enqueued' because GeoserverDeliveryJob
+  # only gets queued during background jobs, not during import.
+  describe 'Importing a record with attached file', :perform_enqueued do
+    let(:file) { File.open(File.join(fixture_path, "vector_example.csv")) }
 
-    expect(GeoblacklightJob).to have_been_enqueued.with(
-      'id' => image.id,
-      'event' => 'CREATED',
-      'doc' => hash_including(dc_identifier_s: image.id)
-    )
-    # TODO: Jobs should also queue for attached files
+    before do
+      ActiveJob::Base.queue_adapter.filter = [IngestFileJob, CharacterizeJob, CreateDerivativesJob]
+      # Don't run fits during the specs:
+      allow(Hydra::Works::CharacterizationService).to receive(:run)
+    end
+
+    it "queues jobs to update the GeoBlacklight app & GeoServer" do
+      expect(GeoblacklightJob).to receive(:perform_later)
+      expect(GeoserverDeliveryJob).to receive(:perform_later)
+      importer.import
+    end
   end
 
   describe 'Generated URLs' do
@@ -94,27 +99,21 @@ RSpec.describe Importer do
       data['file_name'].first
     end
 
-    it 'attaches file as a FileSet and sets its representative title to file_name', :perform_enqueued do
-      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
-
+    it 'attaches file as a FileSet and sets its representative title to file_name' do
       importer.import
       raster_work = RasterWork.where(title: 'Great Rasters')
 
       expect(FileSet.find(raster_work.first.representative_id).title.first).to eql(raster_title)
     end
 
-    it "creates a thumbnail", :perform_enqueued do
-      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
-
+    it "creates a thumbnail" do
       importer.import
       raster_work = RasterWork.where(title: 'Great Rasters')
 
       expect(FileSet.find(raster_work.first.representative_id).thumbnail_id).not_to be_empty
     end
 
-    it "adds file_set information to the work's index", :perform_enqueued do
-      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
-
+    it "adds file_set information to the work's index" do
       importer.import
       raster_work = RasterWork.where(title: 'Great Rasters')
 
@@ -131,26 +130,21 @@ RSpec.describe Importer do
       data['shape_file'].first
     end
 
-    it "attaches and indexes the shape file set as a FileSet", :perform_enqueued do
-      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
+    it "attaches and indexes the shape file set as a FileSet" do
       importer.import
       vector_work = VectorWork.where(title: 'Victor Vector')
 
       expect(vector_work.first.to_solr["file_set_ids_ssim"].size).to eq(1)
     end
 
-    it 'creates and indexes a .png thumbnail', :perform_enqueued do
-      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
-
+    it 'creates and indexes a .png thumbnail' do
       importer.import
       vector_work = VectorWork.where(title: 'Victor Vector')
 
       expect(FileSet.find(vector_work.first.representative_id).to_solr['thumbnail_path_ss']).to include('.png')
     end
 
-    it "sets the thumbnail title to the shape_file name", :perform_enqueued do
-      ActiveJob::Base.queue_adapter.filter = [IngestFileJob]
-
+    it "sets the thumbnail title to the shape_file name" do
       importer.import
       vector_work = VectorWork.where(title: 'Victor Vector')
 
