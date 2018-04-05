@@ -79,17 +79,28 @@ Indexing into the geoblacklight solr happens in a background job, so make sure y
 ## Run the app in development mode
 
 * Start redis server
-* Run fcrepo_wrapper from my alexandria workspace
+* Start tomcat (if you want to run GeoServer)
+* Run fcrepo_wrapper from my iris workspace
 * Run solr_wrapper from my iris workspace
-* Run solr_wrapper from my ucsb-geoblacklight workspace (if you want to integrate with ucsb-geoblacklight)
+* Run solr_wrapper from my aster workspace (if you want to integrate with the geoblacklight app)
 * Start sidekiq (if you want to run background jobs)
 * Start `rails s`
 
 ## Import works using the command-line importer
 
-* Make sure you have set an environment variable for the host/port where the rails app runs:  
-`export RAILS_HOST='localhost:3000'`
+Set the following environment variables:
 
-* To import a sample fixture:  
+```
+export RAILS_HOST='localhost:3000'
+export IMPORTER_USER_KEY='batchuser@example.com'
+
+# Where to find your zip files that contain the data
+export IMPORTER_FILE_PATH='/Users/valerie/dce/sample_data/ucsb/gis'
+```
+
+To import a sample fixture:  
 `rake iris:import:import_sample_record`
+
+To import a work from a CSV file:  
+`rake iris:import:from_a_csv[/path/to/your/input_file.csv]`
 
