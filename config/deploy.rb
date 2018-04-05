@@ -19,6 +19,7 @@ set :branch, ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 
 append :linked_dirs, "log"
 append :linked_dirs, "public/assets"
+append :linked_dirs, "tmp"
 
 append :linked_files, "config/database.yml"
 append :linked_files, "config/secrets.yml"
