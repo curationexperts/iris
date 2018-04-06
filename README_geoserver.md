@@ -51,3 +51,5 @@ export PUBLIC_GEOSERVER_DERIVATIVES_PATH="/[Rails root dir]/tmp/derivatives"
 
 * Now you should be able to run the Iris importer (see the main README for more info).  After the importer finishes and all the background jobs finish, the Iris work records should appear in GeoServer.  If you don't see the records on the GeoServer `Stores` page, you may have to reload the page.  It doesn't update live, and I've noticed that the record counts aren't always correct, but if you click into the `Stores` page, you'll see the new records.
 
+* To show your current geoserver config: `GeoWorks::GeoServer.config`
+
