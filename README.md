@@ -92,6 +92,8 @@ See notes in the [README_geoserver.md](README_geoserver.md)
 
 ## Import works using the command-line importer
 
+This application ingests a few multi-file formats, like AIG (for Raster works) and Shapefiles (for Vector works). Our importer expects its binaries to be found in zips, for both Raster and Vector works. Metadata is ingested via `.csv` files. We can create new works with it, but currently, can't update existing works.
+
 Set the following environment variables:
 
 ```
@@ -109,4 +111,3 @@ To import a work from a CSV file:
 `rake iris:import:from_a_csv[/path/to/your/input_file.csv]`
 
 After you run the importer, you need to wait for the background jobs to finish running, and then you should see the new records appear in your Aster app and your GeoServer, assuming that you have your environment configured correctly.
-
