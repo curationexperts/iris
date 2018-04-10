@@ -1,0 +1,2 @@
+title,creator,keyword,rights,resource_type,visibility,file_name,geo_mime_type,spatial,temporal,provenance,northlimit,eastlimit,southlimit,westlimit
+Zipped Raster Example,raster creator,key1,http://creativecommons.org/publicdomain/zero/1.0/,RasterWork,open,zipped_raster_example.zip,image/tiff; gdal-format=GTiff,Alaska,1914,UCSB,1,2,-3,-4

@@ -10,6 +10,10 @@ AllCops:
     - '**/*.gemspec' # these would normally be inherited from bixby
     - 'config/**/*'
 
+Layout/MultilineMethodCallIndentation:
+  Exclude:
+    - 'spec/importers/importer_spec.rb'
+
 Naming/FileName:
   Exclude:
     - "**/Capfile"

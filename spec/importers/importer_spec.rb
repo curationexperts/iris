@@ -121,6 +121,31 @@ RSpec.describe Importer do
     end
   end
 
+  context "a geo-tiff within a zip file" do
+    let(:csv_file_name) { File.join(fixture_path, "zipped_raster_example.csv") }
+    let(:file) { File.open(csv_file_name) }
+
+    it "attaches both the zip file and the raster file, with raster as reprensentative file" do
+      expect { importer.import }
+        .to change { RasterWork.count }.by(1)
+        .and change { FileSet.count }.by(2)
+
+      expect(RasterWork.count).to eq 1
+      work = RasterWork.first
+
+      tif_file, zip_file = work.ordered_members.to_a
+
+      # TIFF file should be representative file
+      expect(tif_file.geo_mime_type).to eq "image/tiff; gdal-format=GTiff"
+      expect(tif_file.label).to eq "S_566_1914_clip.tif"
+      expect(work.representative_id).to eq tif_file.id
+
+      # The zip file needs geo_mime_type nil or else geo_works will try to run image processing on it, and background jobs will fail.
+      expect(zip_file.geo_mime_type).to eq nil
+      expect(zip_file.label).to eq "zipped_raster_example.zip"
+    end
+  end
+
   # TODO: test for specific properties of geo files: spatial, temporal, coverage, etc.
   # See https://github.com/samvera-labs/geo_works/blob/master/spec/services/geo_works/discovery/document_builder_spec.rb for reference.
   context "creates a VectorWork and attaches shape files" do
