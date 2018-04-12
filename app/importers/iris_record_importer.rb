@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'zip'
+
 ##
 # A `Darlingtonia::RecordImporter` that processes
 # files and passes new works through the Actor
@@ -132,7 +134,7 @@ class IrisRecordImporter < Darlingtonia::RecordImporter
     def extract_files_from_zip(work, file_name, geo_mime_type)
       temp_dir = Dir::Tmpname.create(['iris-'], Hydra::Derivatives.temp_file_base) {}
       FileUtils.mkdir_p(temp_dir)
-      Zip::File.open(file_name) do |zip_file|
+      ::Zip::File.open(file_name) do |zip_file|
         tif_files = zip_file.glob(File.join('**', '*.tif'))
         tif_files.each do |tif|
           next unless tif.file?
