@@ -2,7 +2,8 @@ namespace :iris do
   namespace :import do
     desc 'Import Belize vegetation (vector sample data)'
     task belize: :environment do
-      file = File.join(ENV['IMPORTER_FILE_PATH'], 'gford-20140000-010015_belvegr.csv')
+      config = Rails.application.config_for(:importer)
+      file = File.join(config['file_path'], 'gford-20140000-010015_belvegr.csv')
       parser = IrisCsvParser.new(file: File.open(file))
 
       Importer.new(parser: parser).import
@@ -10,7 +11,8 @@ namespace :iris do
 
     desc 'Import Guatemala elevation (raster sample data)'
     task guatemala: :environment do
-      file = File.join(ENV['IMPORTER_FILE_PATH'], 'gford-20140000-010045_rbmgrd-t.csv')
+      config = Rails.application.config_for(:importer)
+      file = File.join(config['file_path'], 'gford-20140000-010045_rbmgrd-t.csv')
       parser = IrisCsvParser.new(file: File.open(file))
 
       Importer.new(parser: parser).import

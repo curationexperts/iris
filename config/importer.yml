@@ -5,7 +5,7 @@ development:
 
 test:
   user_key:  <%= ENV['IMPORTER_USER_KEY'] %>
-  file_path: <%= ENV['IMPORTER_FILE_PATH'] %>
+  file_path: <%= ENV['TEST_IMPORTER_FILE_PATH'] || 'spec/fixtures' %>
 
 production:
   user_key:  <%= ENV['IMPORTER_USER_KEY'] %>

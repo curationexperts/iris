@@ -32,6 +32,10 @@ If you want your fedora objects to be indexed in another solr instance that is u
 
 Indexing into the geoblacklight solr happens in a background job, so make sure your environment is configured to run background jobs.
 
+## Integration with GeoServer
+
+See notes in the [README_geoserver.md](README_geoserver.md)
+
 ## Install Geo_works dependencies
 
 1. GDAL
@@ -90,6 +94,8 @@ Indexing into the geoblacklight solr happens in a background job, so make sure y
 
 ## Import works using the command-line importer
 
+This application ingests a few multi-file formats, like AIG (for Raster works) and Shapefiles (for Vector works). Our importer expects its binaries to be found in zips, for both Raster and Vector works. Metadata is ingested via `.csv` files. We can create new works with it, but currently, can't update existing works.
+
 Set the following environment variables:
 
 ```
@@ -105,3 +111,5 @@ To import a sample fixture:
 
 To import a work from a CSV file:  
 `rake iris:import:from_a_csv[/path/to/your/input_file.csv]`
+
+After you run the importer, you need to wait for the background jobs to finish running, and then you should see the new records appear in your Aster app and your GeoServer, assuming that you have your environment configured correctly.
