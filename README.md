@@ -4,9 +4,11 @@ This project is a Hyrax 1.0.5 application that uses the Samvera Labs geo_works g
 
 <p><a href="https://travis-ci.org/curationexperts/iris"><img src="https://travis-ci.org/curationexperts/iris.svg?branch=master" alt="Build Status"></a>
 <a href='https://coveralls.io/github/curationexperts/iris?branch=master'><img src='https://coveralls.io/repos/github/curationexperts/iris/badge.svg?branch=master' alt='Coverage Status' /></a>
-</a>
 
 </p>
+
+## Functional Spec
+[A functional spec of DCE's first phase of GIS work for UCSB](doc/ucsb_gis_functional_spec.md)
 
 ## Developer Setup
 
