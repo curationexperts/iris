@@ -13,6 +13,10 @@ class RequestShim
     ENV['RAILS_HOST']
   end
 
+  def host
+    host_with_port
+  end
+
   def protocol
     Rails.application.config.force_ssl ? 'https://' : 'http://'
   end
