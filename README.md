@@ -18,7 +18,7 @@ This project is a Hyrax 1.0.5 application that uses the Samvera Labs geo_works g
    `git clone git@github.com:curationexperts/iris.git`
 1. Change to the application directory
    `cd iris`
-1. `bundle install` under project's current ruby (2.3.4)
+1. `bundle install` under project's current ruby (2.4.4)
 1. Start redis
    `redis-server &`
    *note:* use ` &` to start in the background, or run redis in a new terminal
