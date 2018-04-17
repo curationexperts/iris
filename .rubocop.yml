@@ -32,3 +32,7 @@ RSpec/ExampleLength:
 
 RSpec/MessageSpies:
   Enabled: false
+
+RSpec/DescribeClass:
+  Exclude:
+    - "spec/lib/tasks/import_rake_spec.rb"  
