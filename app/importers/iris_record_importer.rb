@@ -44,7 +44,7 @@ class IrisRecordImporter < Darlingtonia::RecordImporter
 
       trigger_create_events(created)
 
-      info_stream << "Record created at: #{created.id}"
+      info_stream << "Record created at: #{created.id}\n"
     end
 
     # The geo_works gem requires that the work must
