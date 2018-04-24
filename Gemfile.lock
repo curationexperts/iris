@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/samvera-labs/geo_works.git
-  revision: 95b6f726a4111e98f09f4cb257ff9d648564f0ee
+  revision: df1eff35fd01469a623fafeb9d71b44fd6160ca8
   specs:
     geo_works (0.2.0)
       hyrax (>= 1.0.1, < 2.0)

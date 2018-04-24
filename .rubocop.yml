@@ -9,6 +9,7 @@ AllCops:
     - 'tmp/**/*'
     - '**/*.gemspec' # these would normally be inherited from bixby
     - 'config/**/*'
+    - 'app/models/geo_server/coverage.rb'
 
 Layout/MultilineMethodCallIndentation:
   Exclude:
