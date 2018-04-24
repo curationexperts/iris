@@ -47,6 +47,15 @@ RSpec.describe IsoZipMapper do
   end
 
   describe 'metadata properties' do
+    # creator: ["Stephen Hawking"],
+    # keyword: ["physics"],
+    # rights: ["http://creativecommons.org/publicdomain/zero/1.0/"],
+    # resource_type: ["ImageWork"],
+    # spatial: ["Alaska"],
+    # temporal: ["2018"],
+
+    # visibility: nil,
+
     context 'with metadata' do
       before { mapper.metadata = zip }
 
@@ -60,7 +69,7 @@ RSpec.describe IsoZipMapper do
       end
 
       it 'maps the provenance field' do
-        expect(mapper.provenance).to eq('University of California Santa Barbara')
+        expect(mapper.provenance.first).to include('University of California, Santa Barbara')
       end
     end
   end

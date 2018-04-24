@@ -26,7 +26,8 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
   end
 
   def provenance
-    iso.xpath('//xmlns:MD_Metadata//xmlns:contact//xmlns:CI_ResponsibleParty//xmlns:organizationName//xmlns:CharacterString').map(&:text)
+    contacts = iso.xpath('//xmlns:MD_Metadata//xmlns:contact//xmlns:CI_ResponsibleParty//xmlns:organisationName//gco:CharacterString').map(&:text)
+    contacts.select { |c| c.include? 'University of California, Santa Barbara' }
   end
 
   def coverage
