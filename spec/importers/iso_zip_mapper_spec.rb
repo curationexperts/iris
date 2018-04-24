@@ -47,21 +47,54 @@ RSpec.describe IsoZipMapper do
   end
 
   describe 'metadata properties' do
-    # creator: ["Stephen Hawking"],
     # keyword: ["physics"],
     # rights: ["http://creativecommons.org/publicdomain/zero/1.0/"],
-    # resource_type: ["ImageWork"],
-    # spatial: ["Alaska"],
-    # temporal: ["2018"],
 
     # visibility: nil,
 
-    context 'with metadata' do
+
+    context 'with metadata from ISO' do
       before { mapper.metadata = zip }
 
-      it 'maps the title from the ISO' do
+      it 'maps the title' do
         expect(mapper.title)
           .to contain_exactly 'Forest Cover, Maya Forest, Belize (Northeast), 1995'
+      end
+
+      it "maps the creator" do
+        expect(mapper.creator).to contain_exactly "University of Florida. GeoPlan Center"
+      end
+
+      it "maps the spatial property" do
+        expect(mapper.spatial).to contain_exactly 'Belize'
+      end
+
+      # TODO: confirm strings are the correct format to return,
+      # and range is formatted correctly, and that zip samples are right
+      describe "mapping the temporal property" do
+        context "when a timePeriod is found" do
+          it "maps the temporal" do
+            expect(mapper.temporal).to eq "1985-01-01T00:00:00 - 1992-01-01T00:00:00"
+          end
+        end
+
+        context 'when a TimeInstant is found' do
+          let(:zip) do
+            Zip::File.open('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip')
+          end
+          it "maps the temporal" do
+            expect(mapper.temporal).to eq "2000-03-01T00:00:00"
+          end
+        end
+
+        context 'when no temporal property is found' do
+          let(:zip) do
+            Zip::File.open('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip')
+          end
+          it "maps the temporal" do
+            expect(mapper.temporal).to eq ""
+          end
+        end
       end
 
       it "maps the bounding box fields and provides a GeoWorks::Coverage object" do
@@ -69,7 +102,7 @@ RSpec.describe IsoZipMapper do
       end
 
       it 'maps the provenance field' do
-        expect(mapper.provenance.first).to include('University of California, Santa Barbara')
+        expect(mapper.provenance).to eq('University of California, Santa Barbara')
       end
     end
   end
