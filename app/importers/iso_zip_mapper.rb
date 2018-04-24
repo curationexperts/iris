@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 class IsoZipMapper < Darlingtonia::MetadataMapper
   def fields
-    [:title, :iso, :resource_type, :zip]
+    [:title, :iso, :resource_type, :zip, :coverage]
   end
 
   def input_fields
-    [:iso, :resource_type, :zip]
+    [:iso, :resource_type, :zip, :coverage, :northlimit, :eastlimit, :southlimit, :westlimit]
   end
 
   def iso
@@ -23,6 +23,19 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
   def title
     iso.xpath('//xmlns:citation/xmlns:CI_Citation/xmlns:title/gco:CharacterString')
        .map(&:text)
+  end
+
+  def provenance
+    iso.xpath('//xmlns:MD_Metadata//xmlns:contact//xmlns:CI_ResponsibleParty//xmlns:organizationName//xmlns:CharacterString').map(&:text)
+  end
+
+  def coverage
+    northlimit = iso.xpath('//xmlns:EX_GeographicBoundingBox//xmlns:northBoundLatitude').text.strip
+    eastlimit = iso.xpath('//xmlns:EX_GeographicBoundingBox//xmlns:eastBoundLongitude').text.strip
+    southlimit = iso.xpath('//xmlns:EX_GeographicBoundingBox//xmlns:southBoundLatitude').text.strip
+    westlimit = iso.xpath('//xmlns:EX_GeographicBoundingBox//xmlns:westBoundLongitude').text.strip
+
+    GeoWorks::Coverage.new(northlimit, eastlimit, southlimit, westlimit).to_s
   end
 
   def zip

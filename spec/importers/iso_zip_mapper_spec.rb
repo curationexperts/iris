@@ -46,13 +46,21 @@ RSpec.describe IsoZipMapper do
     end
   end
 
-  describe '#title' do
+  describe 'metadata properties' do
     context 'with metadata' do
       before { mapper.metadata = zip }
 
       it 'maps the title from the ISO' do
         expect(mapper.title)
           .to contain_exactly 'Forest Cover, Maya Forest, Belize (Northeast), 1995'
+      end
+
+      it "maps the bounding box fields and provides a GeoWorks::Coverage object" do
+        expect(mapper.coverage).to eq("northlimit=18.491987; eastlimit=-87.852387; southlimit=17.748652; westlimit=-88.509256; units=degrees; projection=EPSG:4326")
+      end
+
+      it 'maps the provenance field' do
+        expect(mapper.provenance).to eq('University of California Santa Barbara')
       end
     end
   end
