@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 class IsoZipMapper < Darlingtonia::MetadataMapper
   def fields
-    [:title, :iso, :resource_type, :zip, :coverage, :provenance]
+    [:title, :creator, :iso, :resource_type, :zip, :coverage, :provenance, :temporal, :spatial, :keyword]
   end
 
-  # TODO: is this filter-array really necessary?
   def input_fields
-    [:iso, :resource_type, :zip, :coverage, :northlimit, :eastlimit, :southlimit, :westlimit, :provenance]
+    [:iso, :zip, :northlimit, :eastlimit, :southlimit, :westlimit]
   end
 
   NS = {
@@ -106,16 +105,28 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
   end
 
   def temporal
-    if iso.xpath('//gml:TimePeriod').empty?
+    return nil if iso.xpath('//gml:TimeInstant').empty? && iso.xpath('//gml:TimePeriod').empty?
+
+    if iso.xpath('//gml:TimeInstant').any?
       temporal = iso.xpath("//gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant/gml:timePosition", NS).text
-    elsif iso.xpath('//gml:TimeInstant').any?
+    else
       start = iso.xpath("//gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition", NS).text
       finish = iso.xpath("//gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition", NS).text
       temporal = start + " - " + finish
-    else
-      temporal = ''
     end
-    temporal
+    [temporal]
+  end
+
+  def keyword
+    theme = ''
+    iso.xpath("//gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='theme']", NS).each do |node|
+      theme = begin
+        [node.at_xpath('ancestor-or-self::*/gmd:keyword', NS).text.strip]
+      rescue
+        [node.at_xpath('ancestor-or-self::*/gmd:keyword', NS).text.strip]
+      end
+    end
+    theme
   end
 
   def zip

@@ -27,7 +27,6 @@ RSpec.describe IsoZipMapper do
   end
 
   describe '#input_fields' do
-    it { expect(mapper.input_fields).to include :resource_type }
     it { expect(mapper.input_fields).to include :zip }
     it { expect(mapper.input_fields).to include :iso }
   end
@@ -82,12 +81,7 @@ RSpec.describe IsoZipMapper do
   end
 
   describe 'metadata properties' do
-    # keyword: ["physics"],
-    # rights: ["http://creativecommons.org/publicdomain/zero/1.0/"],
-
-    # visibility: nil,
-
-    context 'with metadata from ISO' do
+    context 'from an iso19139 source' do
       before { mapper.metadata = zip }
       after { zip.close }
 
@@ -104,30 +98,34 @@ RSpec.describe IsoZipMapper do
         expect(mapper.spatial).to contain_exactly 'Belize'
       end
 
+      it "maps the keyword" do
+        expect(mapper.keyword).to contain_exactly 'Forest biodiversity'
+      end
+
       # TODO: confirm strings are the correct format to return,
       # and range is formatted correctly, and that zip samples are right
-      describe "mapping the temporal property" do
+      describe "mapping temporal" do
         context "when a timePeriod is found" do
-          it "maps the temporal" do
-            expect(mapper.temporal).to eq "1985-01-01T00:00:00 - 1992-01-01T00:00:00"
+          it "returns two DateStrings in a string with a dash between them" do
+            expect(mapper.temporal).to contain_exactly "1985-01-01T00:00:00 - 1992-01-01T00:00:00"
           end
         end
 
         context 'when a TimeInstant is found' do
           let(:zip) do
-            Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip'))
+            Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip'))
           end
-          it "maps the temporal" do
-            expect(mapper.temporal).to eq "2000-03-01T00:00:00"
+          it "returns a DateString" do
+            expect(mapper.temporal).to contain_exactly "2000-03-01T00:00:00"
           end
         end
 
-        context 'when no temporal property is found' do
+        context 'when no time nodes are found' do
           let(:zip) do
-            Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip'))
+            Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip'))
           end
-          it "maps the temporal" do
-            expect(mapper.temporal).to eq ""
+          it "returns nil" do
+            expect(mapper.temporal).to be nil
           end
         end
       end
@@ -136,7 +134,7 @@ RSpec.describe IsoZipMapper do
         expect(mapper.coverage).to eq("northlimit=18.491987; eastlimit=-87.852387; southlimit=17.748652; westlimit=-88.509256; units=degrees; projection=EPSG:4326")
       end
 
-      it 'maps the provenance field' do
+      it 'maps the provenance field to University of California, Santa Barbara' do
         expect(mapper.provenance).to eq('University of California, Santa Barbara')
       end
     end
