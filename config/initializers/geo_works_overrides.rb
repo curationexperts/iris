@@ -9,3 +9,6 @@ GeoWorks::Discovery::DocumentBuilder.services = [
   GeoWorks::Discovery::DocumentBuilder::LayerInfoBuilder,
   GeoWorks::Discovery::DocumentBuilder::SlugBuilder
 ]
+
+# Use our own Coverage model for talking to GeoServer.
+GeoWorks::Delivery::Geoserver.coverage_class = ::GeoServer::Coverage
