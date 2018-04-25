@@ -23,8 +23,22 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
       end
   end
 
+  # TODO: Add the other types as needed.
+  def geo_mime_type
+    if shapefile?
+      'application/zip; ogr-format="ESRI Shapefile"'
+    elsif tif?
+      'image/tiff; gdal-format=GTiff'
+    end
+  end
+
+  # TODO: Add the other types as needed.
   def resource_type
-    ['VectorWork']
+    if shapefile?
+      ['VectorWork']
+    elsif tif?
+      ['RasterWork']
+    end
   end
 
   def title
@@ -102,5 +116,13 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
 
       FileUtils.mkdir_p(directory)
       directory
+    end
+
+    def shapefile?
+      zip.glob('**/*.shp').present?
+    end
+
+    def tif?
+      zip.glob('**/*.tif').present?
     end
 end

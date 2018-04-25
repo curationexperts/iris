@@ -39,10 +39,45 @@ RSpec.describe IsoZipMapper do
 
     context 'with metadata' do
       before { mapper.metadata = zip }
+      after { zip.close }
 
       it 'is an XML document' do
         expect(mapper.iso).to be_a Nokogiri::XML::Document
       end
+    end
+  end
+
+  describe '#geo_mime_type' do
+    subject { mapper.geo_mime_type }
+
+    before { mapper.metadata = zip }
+    after { zip.close }
+
+    context 'for a shapefile' do
+      it { is_expected.to eq 'application/zip; ogr-format="ESRI Shapefile"' }
+    end
+
+    context 'for a geotiff file' do
+      let(:zip) { Zip::File.open('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip') }
+
+      it { is_expected.to eq 'image/tiff; gdal-format=GTiff' }
+    end
+  end
+
+  describe '#resource_type' do
+    subject { mapper.resource_type }
+
+    before { mapper.metadata = zip }
+    after { zip.close }
+
+    context 'for a shapefile' do
+      it { is_expected.to eq ['VectorWork'] }
+    end
+
+    context 'for a geotiff file' do
+      let(:zip) { Zip::File.open('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip') }
+
+      it { is_expected.to eq ['RasterWork'] }
     end
   end
 
@@ -52,9 +87,9 @@ RSpec.describe IsoZipMapper do
 
     # visibility: nil,
 
-
     context 'with metadata from ISO' do
       before { mapper.metadata = zip }
+      after { zip.close }
 
       it 'maps the title' do
         expect(mapper.title)

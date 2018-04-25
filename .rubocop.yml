@@ -23,9 +23,15 @@ Naming/FileName:
 Metrics/BlockLength:
   Enabled: false
 
+Metrics/ClassLength:
+  Exclude:
+    - 'app/controllers/catalog_controller.rb'
+    - 'app/importers/iso_zip_mapper.rb'
+
 Metrics/LineLength:
   Exclude:
     - "app/importers/iris_mapper.rb"
+    - 'app/importers/iso_zip_mapper.rb'
 
 RSpec/ExampleLength:
   Enabled: false
