@@ -80,18 +80,6 @@ RSpec.describe Importer do
     expect(image.visibility).to eq "open"
   end
 
-  context "a CSV without 'visibility' field" do
-    let(:file) { File.open(File.join(fixture_path, "example_with_no_visibility.csv")) }
-
-    it "creates a work with 'restricted' visibility" do
-      expect { importer.import }.to change { ImageWork.count }.by 1
-      expect(ImageWork.count).to eq 1
-      image = ImageWork.first
-
-      expect(image.visibility).to eq "restricted"
-    end
-  end
-
   context 'creates a RasterWork and then attaches a geo tif file' do
     let(:file) { File.open(File.join(fixture_path, "raster_example.csv")) }
     let(:raster_title) do

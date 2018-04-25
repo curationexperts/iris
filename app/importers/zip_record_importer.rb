@@ -39,7 +39,7 @@ class ZipRecordImporter < Darlingtonia::RecordImporter
         actor.create_metadata(visibility: work.visibility)
         file = ::ImportFile.new(file_path)
         actor.create_content(file)
-        actor.attach_file_to_work(work, visibility: work.visibility)
+        actor.attach_file_to_work(work)
       end
     end
   end

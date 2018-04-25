@@ -27,7 +27,7 @@ RSpec.describe IrisMapper do
       spatial: ["Alaska"],
       temporal: ["2018"],
       provenance: "UCSB",
-      visibility: nil,
+      visibility: "open",
       representative_file: nil,
       shapefiles: nil,
       coverage: "northlimit=1; eastlimit=2; southlimit=-3; westlimit=-4; units=degrees; projection=EPSG:4326",

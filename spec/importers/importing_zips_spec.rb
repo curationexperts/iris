@@ -23,9 +23,8 @@ RSpec.describe 'Importing from a directory of zip files:' do
         .and change { VectorWork.count }.by(1)
         .and change { FileSet.count }.by(3)
 
-      # TODO: .
-      # expect(raster.visibility).to eq 'open'
-      # expect(vector.visibility).to eq 'open'
+      expect(raster.visibility).to eq 'open'
+      expect(vector.visibility).to eq 'open'
 
       # Check the attached files for the raster
       tif_file, zip_file = raster.ordered_members.to_a
@@ -34,16 +33,19 @@ RSpec.describe 'Importing from a directory of zip files:' do
       expect(tif_file.geo_mime_type).to eq 'image/tiff; gdal-format=GTiff'
       expect(tif_file.label).to eq 'gford-20140000-010045_rbmgrd-t.tif'
       expect(raster.representative_id).to eq tif_file.id
+      expect(tif_file.visibility).to eq 'open'
 
       # The zip file needs geo_mime_type nil or else geo_works will try to run image processing on it, and background jobs will fail.
       expect(zip_file.geo_mime_type).to eq nil
       expect(zip_file.label).to eq 'gford-20140000-010045_rbmgrd-t.zip'
+      expect(zip_file.visibility).to eq 'open'
 
       # Check the attached files for the vector
       expect(vector.ordered_members.to_a.size).to eq 1
       shapefile = vector.ordered_members.to_a.first
       expect(shapefile.geo_mime_type).to eq 'application/zip; ogr-format="ESRI Shapefile"'
       expect(vector.representative_id).to eq shapefile.id
+      expect(shapefile.visibility).to eq 'open'
     end
   end
 end

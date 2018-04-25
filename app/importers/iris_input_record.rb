@@ -23,8 +23,10 @@ class IrisInputRecord < Darlingtonia::InputRecord
   # but they do not map to Hyrax attributes, and so we do not want their values returned from this method
   def attributes
     fields = mapper.fields - mapper.input_fields
-    fields.each_with_object({}) do |field, attrs|
-      attrs[field] = public_send(field)
+    attrs = fields.each_with_object({}) do |field, attrs_hash|
+      attrs_hash[field] = public_send(field)
     end
+    attrs[:visibility] = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+    attrs
   end
 end
