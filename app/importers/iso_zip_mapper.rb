@@ -23,6 +23,15 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
       end
   end
 
+  def tif
+    @tif ||=
+      zip.glob('**/*.tif').map do |file|
+        dest_file = File.join(tmp_dir, File.basename(file.name))
+        file.extract(dest_file)
+        dest_file
+      end
+  end
+
   # TODO: Add the other types as needed.
   def geo_mime_type
     if shapefile?
@@ -39,6 +48,19 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
     elsif tif?
       ['RasterWork']
     end
+  end
+
+  # For some types of records, we want to extract some
+  # of the files from the zip and attach those files
+  # directly to the work record (because geo_works
+  # gem expects the representative file for the work
+  # to be the main raster or vector file, not the zip).
+  #
+  # @return [Array<String>] the list of full paths to the extracted files that we want to attach.
+  def extracted_files
+    return @extracted_files if @extracted_files
+    # TODO: Add other types of extracted files
+    @extracted_files = tif
   end
 
   def title
@@ -103,12 +125,12 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
   private
 
     def iso_entry_name
-      zip.name.split('/').last.sub('.zip', '').to_s +
+      zip.name.split.last.sub('.zip', '').to_s +
         '-iso19139.xml'
     end
 
     def iso_entry
-      zip.get_entry(iso_entry_name)
+      zip.glob(File.join('**', iso_entry_name)).first
     end
 
     def tmp_dir

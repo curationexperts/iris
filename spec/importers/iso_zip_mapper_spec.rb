@@ -5,7 +5,7 @@ RSpec.describe IsoZipMapper do
   subject(:mapper) { described_class.new }
 
   let(:zip) do
-    Zip::File.open('spec/fixtures/import_zips/gford-20140000-010011_belfor1r.zip')
+    Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010011_belfor1r.zip'))
   end
 
   describe '#fields' do
@@ -58,7 +58,7 @@ RSpec.describe IsoZipMapper do
     end
 
     context 'for a geotiff file' do
-      let(:zip) { Zip::File.open('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip') }
+      let(:zip) { Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip')) }
 
       it { is_expected.to eq 'image/tiff; gdal-format=GTiff' }
     end
@@ -75,7 +75,7 @@ RSpec.describe IsoZipMapper do
     end
 
     context 'for a geotiff file' do
-      let(:zip) { Zip::File.open('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip') }
+      let(:zip) { Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip')) }
 
       it { is_expected.to eq ['RasterWork'] }
     end
@@ -115,7 +115,7 @@ RSpec.describe IsoZipMapper do
 
         context 'when a TimeInstant is found' do
           let(:zip) do
-            Zip::File.open('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip')
+            Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip'))
           end
           it "maps the temporal" do
             expect(mapper.temporal).to eq "2000-03-01T00:00:00"
@@ -124,7 +124,7 @@ RSpec.describe IsoZipMapper do
 
         context 'when no temporal property is found' do
           let(:zip) do
-            Zip::File.open('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip')
+            Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip'))
           end
           it "maps the temporal" do
             expect(mapper.temporal).to eq ""
