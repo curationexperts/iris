@@ -94,8 +94,6 @@ See notes in the [README_geoserver.md](README_geoserver.md)
 
 ## Import works using the command-line importer
 
-This application ingests a few multi-file formats, like AIG (for Raster works) and Shapefiles (for Vector works). Our importer expects its binaries to be found in zips, for both Raster and Vector works. Metadata is ingested via `.csv` files. We can create new works with it, but currently, can't update existing works.
-
 Set the following environment variables:
 
 ```
@@ -106,10 +104,19 @@ export IMPORTER_USER_KEY='batchuser@example.com'
 export IMPORTER_FILE_PATH='/Users/valerie/dce/sample_data/ucsb/gis'
 ```
 
-To import a sample fixture:  
-`rake iris:import:import_sample_record`
+To import work records from a directory that contains zip files:
+`rake iris:import:from_zips[/path/to/your/zips]`
 
 To import a work from a CSV file:  
 `rake iris:import:from_a_csv[/path/to/your/input_file.csv]`
 
-After you run the importer, you need to wait for the background jobs to finish running, and then you should see the new records appear in your Aster app and your GeoServer, assuming that you have your environment configured correctly.
+Notes:
+
+* The importer expects all the binaries to be found in zip files, for both Raster and Vector works (even for files that are not normally multi-part files, such as GeoTIFF).
+
+* You can use the importer to create new records, but currently, you cannot update existing records by re-importing them.
+
+* Although the geo_works gem allows 3 work types, VectorWork, RasterWork, and ImageWork, the importer currently cannot create ImageWork records.
+
+* The importer queues a set of background jobs for each zip file it processes, and some jobs queue other jobs.  You'll need to wait for the background jobs to finish running before you will see the new data appear in your GeoBlacklight app and your GeoServer.
+
