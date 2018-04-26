@@ -118,6 +118,10 @@ Notes and Assumptions:
 
 * The importer queues a set of background jobs for each zip file it processes, and some jobs queue other jobs.  You'll need to wait for the background jobs to finish running before you will see the new data appear in your GeoBlacklight app and your GeoServer.
 
+* For the first release, the importer has only been tested with GeoTIFF and Shapefile.  Support for other types of Vector or Raster works will be a future round of work.
+
+* For the first release, the importer has only been tested with records that should be publicly available.  Support for login-restricted works will be a future round of work.
+
 * Although the geo_works gem allows 3 work types, VectorWork, RasterWork, and ImageWork, the importer currently cannot create ImageWork records.
 
 * Although the geo_works gem allows 2 types of Grid file (ASCII and binary), the importer currently only imports binary Grids.
