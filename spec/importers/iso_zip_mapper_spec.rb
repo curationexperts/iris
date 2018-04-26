@@ -61,6 +61,12 @@ RSpec.describe IsoZipMapper do
 
       it { is_expected.to eq 'image/tiff; gdal-format=GTiff' }
     end
+
+    context 'for a binary GRID file' do
+      let(:zip) { Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip')) }
+
+      it { is_expected.to eq 'application/octet-stream; gdal-format=AIG' }
+    end
   end
 
   describe '#resource_type' do
@@ -75,6 +81,12 @@ RSpec.describe IsoZipMapper do
 
     context 'for a geotiff file' do
       let(:zip) { Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010045_rbmgrd-t.zip')) }
+
+      it { is_expected.to eq ['RasterWork'] }
+    end
+
+    context 'for a binary GRID file' do
+      let(:zip) { Zip::File.open(Pathname.new('spec/fixtures/import_zips/gford-20140000-010052_utm_mayatopo.zip')) }
 
       it { is_expected.to eq ['RasterWork'] }
     end

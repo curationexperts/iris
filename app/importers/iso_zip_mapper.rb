@@ -37,6 +37,8 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
       'application/zip; ogr-format="ESRI Shapefile"'
     elsif tif?
       'image/tiff; gdal-format=GTiff'
+    elsif binary_grid?
+      'application/octet-stream; gdal-format=AIG'
     end
   end
 
@@ -44,7 +46,7 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
   def resource_type
     if shapefile?
       ['VectorWork']
-    elsif tif?
+    elsif tif? || binary_grid?
       ['RasterWork']
     end
   end
@@ -157,5 +159,9 @@ class IsoZipMapper < Darlingtonia::MetadataMapper
 
     def tif?
       zip.glob('**/*.tif').present?
+    end
+
+    def binary_grid?
+      zip.glob('**/*.adf').present?
     end
 end

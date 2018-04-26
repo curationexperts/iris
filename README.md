@@ -110,13 +110,15 @@ To import work records from a directory that contains zip files:
 To import a work from a CSV file:  
 `rake iris:import:from_a_csv[/path/to/your/input_file.csv]`
 
-Notes:
+Notes and Assumptions:
 
 * The importer expects all the binaries to be found in zip files, for both Raster and Vector works (even for files that are not normally multi-part files, such as GeoTIFF).
 
 * You can use the importer to create new records, but currently, you cannot update existing records by re-importing them.
 
+* The importer queues a set of background jobs for each zip file it processes, and some jobs queue other jobs.  You'll need to wait for the background jobs to finish running before you will see the new data appear in your GeoBlacklight app and your GeoServer.
+
 * Although the geo_works gem allows 3 work types, VectorWork, RasterWork, and ImageWork, the importer currently cannot create ImageWork records.
 
-* The importer queues a set of background jobs for each zip file it processes, and some jobs queue other jobs.  You'll need to wait for the background jobs to finish running before you will see the new data appear in your GeoBlacklight app and your GeoServer.
+* Although the geo_works gem allows 2 types of Grid file (ASCII and binary), the importer currently only imports binary Grids.
 
