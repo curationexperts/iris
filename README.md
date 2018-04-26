@@ -104,7 +104,7 @@ export IMPORTER_USER_KEY='batchuser@example.com'
 export IMPORTER_FILE_PATH='/Users/valerie/dce/sample_data/ucsb/gis'
 ```
 
-To import work records from a directory that contains zip files:
+To import work records from a directory that contains zip files:   
 `rake iris:import:from_zips[/path/to/your/zips]`
 
 To import a work from a CSV file:  
