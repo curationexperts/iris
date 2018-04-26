@@ -14,14 +14,7 @@ class Importer < Darlingtonia::Importer
 
   private
 
-    def default_creator
-      User.batch_user
-    end
-
     def default_record_importer
-      IrisRecordImporter.new(
-        creator: default_creator,
-        file_path: config['file_path']
-      )
+      ZipRecordImporter.new
     end
 end

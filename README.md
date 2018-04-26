@@ -98,19 +98,15 @@ Set the following environment variables:
 
 ```
 export RAILS_HOST='localhost:3000'
-export IMPORTER_USER_KEY='batchuser@example.com'
-
-# Where to find your zip files that contain the data
-export IMPORTER_FILE_PATH='/Users/valerie/dce/sample_data/ucsb/gis'
 ```
 
-To import work records from a directory that contains zip files:   
-`rake iris:import:from_zips[/path/to/your/zips]`
+To import work records from a directory that contains zip files:
 
-To import a work from a CSV file:  
-`rake iris:import:from_a_csv[/path/to/your/input_file.csv]`
+```
+rake iris:import:from_zips[/path/to/your/zips]
+```
 
-Notes and Assumptions:
+### Notes and Assumptions about Command-Line Importer:
 
 * The importer expects all the binaries to be found in zip files, for both Raster and Vector works (even for files that are not normally multi-part files, such as GeoTIFF).
 
