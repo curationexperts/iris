@@ -13,7 +13,6 @@ AllCops:
 
 Layout/MultilineMethodCallIndentation:
   Exclude:
-    - 'spec/importers/importer_spec.rb'
     - 'spec/importers/importing_zips_spec.rb'
 
 Naming/FileName:
@@ -32,7 +31,6 @@ Metrics/ClassLength:
 
 Metrics/LineLength:
   Exclude:
-    - "app/importers/iris_mapper.rb"
     - 'app/importers/iso_zip_mapper.rb'
 
 RSpec/DescribeClass:
@@ -47,5 +45,4 @@ RSpec/MessageSpies:
 
 RSpec/DescribeClass:
   Exclude:
-    - "spec/lib/tasks/import_rake_spec.rb"  
     - 'spec/importers/importing_zips_spec.rb'
